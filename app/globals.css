@@ -1,26 +1,251 @@
 @import "tailwindcss";
 
 :root {
+  /* Existing (keep for Tailwind @theme mapping) */
   --background: #ffffff;
   --foreground: #171717;
+
+  /* =============================================
+     COLORS (Main Colours.tokens.json)
+     ============================================= */
+  --color-bg-page: #FCFCFD;
+  --color-bg-card: #FAFAFA;
+  --color-bg-card-secondary: #EEEEF0;
+
+  --color-text-primary: #080808;
+  --color-text-secondary: #757575;
+  --color-text-inverse: #FAFAFA;
+
+  --color-accent-primary: #0022FF;
+
+  --color-border-strong: #080808;
+  --color-border-subtle: #D7D7D7;
+
+  /* =============================================
+     PRIMITIVES (Numbers scale)
+     ============================================= */
+  --scale-3xs: 2px;
+  --scale-2xs: 4px;
+  --scale-xs: 8px;
+  --scale-s: 12px;
+  --scale-m: 16px;
+  --scale-l: 24px;
+  --scale-xl: 32px;
+  --scale-2xl: 48px;
+  --scale-3xl: 64px;
+  --scale-4xl: 96px;
+  --scale-full: 999px;
+
+  /* =============================================
+     LAYOUT & SPACING (Sizing tokens – Desktop)
+     Note: we keep your earlier aliases too.
+     ============================================= */
+  /* Figma-named */
+  --page-padding-x: 96px;
+  --page-padding-y: 48px;
+  --page-section-gap: 48px;
+
+  /* Your working aliases (used in code so far) */
+  --space-page-x: 64px;   /* desktop side padding */
+  --space-page-y: 48px;   /* desktop top/bottom padding */
+  --space-section-gap: 96px;
+  --space-gutter: 24px;
+
+  /* Card spacing */
+  --card-padding-s: 16px;
+  --card-padding-m: 24px;
+  --card-padding-l: 32px;
+  --card-gap-s: 16px;
+  --card-gap-m: 24px;
+  --card-gap-l: 48px;
+
+  /* Element spacing */
+  --space-xs: 8px;
+  --space-s: 12px;
+  --space-m: 16px;
+  --space-l: 24px;
+
+  /* =============================================
+     RADIUS (Sizing tokens – Desktop)
+     ============================================= */
+  --radius-s: 8px;
+  --radius-m: 12px;
+  --radius-l: 16px;
+  --radius-xl: 24px;
+  --radius-full: 999px;
+
+  /* =============================================
+     TYPOGRAPHY (Typography – Desktop)
+     ============================================= */
+  --font-family-sans: Geist;
+
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  --line-height-body: 1.6;
+  --line-height-heading: 1.2;
+
+  --font-size-caption: 12px;
+  --font-size-meta: 12px;
+  --font-size-body: 14px;
+  --font-size-subtitle: 18px;
+  --font-size-h3: 24px;
+  --font-size-h2: 32px;
+  --font-size-h1: 48px;
+
+  /* =============================================
+     TYPOGRAPHY (Typography – Mobile)
+     ============================================= */
+  --font-size-mobile-caption: 12px;
+  --font-size-mobile-meta: 14px;
+  --font-size-mobile-body: 16px;
+  --font-size-mobile-subtitle: 18px;
+  --font-size-mobile-h3: 20px;
+  --font-size-mobile-h2: 28px;
+  --font-size-mobile-h1: 36px;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
+  --font-sans: var(--font-family-sans);
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  h1 {
+    font-size: var(--font-size-mobile-h1);
+    font-weight: var(--font-weight-bold);
+    line-height: 1.05;
+    color: var(--color-text-primary);
+    margin: 0;
+  }
+
+  h2 {
+    font-size: var(--font-size-mobile-h2);
+    font-weight: var(--font-weight-bold);
+    line-height: var(--line-height-heading);
+    color: var(--color-text-primary);
+  }
+
+  h3 {
+    font-size: var(--font-size-mobile-h3);
+    font-weight: var(--font-weight-semibold);
+    line-height: var(--line-height-heading);
+    color: var(--color-text-primary);
+  }
+
+  p {
+    font-size: var(--font-size-mobile-body);
+    line-height: var(--line-height-body);
+    color: var(--color-text-secondary);
+    margin: 0;
+  }
+
+  small {
+    font-size: var(--font-size-mobile-meta);
+    line-height: var(--line-height-body);
+    color: var(--color-text-secondary);
+  }
+
+  @media (min-width: 1024px) {
+    h1 { font-size: var(--font-size-h1); }
+    h2 { font-size: var(--font-size-h2); }
+    h3 { font-size: var(--font-size-h3); }
+    p  { font-size: var(--font-size-body); }
+    small { font-size: var(--font-size-meta); }
   }
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  color: var(--color-text-primary);
+  font-family: var(--font-family-sans), ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+
+  /* Base sky (higher contrast + blue openings) */
+  background:
+    radial-gradient(circle at 18% 28%, rgba(180, 215, 255, 0.45) 0 260px, transparent 420px),
+    radial-gradient(circle at 72% 22%, rgba(170, 210, 255, 0.35) 0 240px, transparent 420px),
+    radial-gradient(circle at 55% 48%, rgba(200, 230, 255, 0.25) 0 220px, transparent 420px),
+    linear-gradient(180deg,
+      #bcdcff 0%,
+      #d6ecff 30%,
+      #eef8ff 60%,
+      #fcfcfd 100%
+    );
+
+  min-height: 100vh;
+}
+
+/* Clouds layer */
+body::before {
+  content: "";
+  position: fixed;
+  inset: -64px;
+  pointer-events: none;
+  z-index: -2;
+
+  background-image:
+    /* nube superior 1 (half cut) */
+    radial-gradient(ellipse 120px 80px at 25% -5%, rgba(255,255,255,0.85) 0 80px, transparent 160px),
+    radial-gradient(ellipse 140px 90px at 30% 0%, rgba(255,255,255,0.7) 0 90px, transparent 180px),
+
+    /* nube superior 2 (half cut) */
+    radial-gradient(ellipse 110px 70px at 70% -8%, rgba(255,255,255,0.8) 0 75px, transparent 150px),
+    radial-gradient(ellipse 130px 85px at 75% -2%, rgba(255,255,255,0.65) 0 85px, transparent 170px),
+
+    /* nube 1 */
+    radial-gradient(ellipse 90px 60px at 15% 25%, rgba(255,255,255,0.85) 0 60px, transparent 120px),
+    radial-gradient(ellipse 110px 80px at 20% 30%, rgba(255,255,255,0.75) 0 80px, transparent 150px),
+    radial-gradient(ellipse 100px 70px at 10% 35%, rgba(255,255,255,0.65) 0 70px, transparent 140px),
+
+    /* nube 2 */
+    radial-gradient(circle at 55% 20%, rgba(255,255,255,0.9) 0 70px, transparent 140px),
+    radial-gradient(circle at 60% 25%, rgba(255,255,255,0.75) 0 90px, transparent 170px),
+    radial-gradient(circle at 50% 30%, rgba(255,255,255,0.6) 0 80px, transparent 150px),
+
+    /* nube 3 */
+    radial-gradient(circle at 80% 35%, rgba(255,255,255,0.8) 0 75px, transparent 150px),
+    radial-gradient(circle at 85% 40%, rgba(255,255,255,0.7) 0 95px, transparent 180px),
+
+    /* nube inferior */
+    radial-gradient(circle at 30% 65%, rgba(255,255,255,0.6) 0 100px, transparent 200px),
+    radial-gradient(circle at 45% 70%, rgba(255,255,255,0.5) 0 120px, transparent 240px);
+
+  background-repeat: repeat-x;
+  background-size: 2000px 100%;
+  background-position: 0 64px;
+
+  filter: blur(15px);
+  opacity: 0.9;
+  animation: clouds-drift 25s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body::before {
+    animation: none;
+  }
+}
+
+/* Optional: your dot overlay ON TOP (keep it subtle) */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+
+  background-image: radial-gradient(rgba(0, 0, 0, 0.38) 2.4px, transparent 2.4px);
+  background-size: 32px 32px;
+  opacity: 0.28;
+}
+
+@keyframes clouds-drift {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: 2000px 0;
+  }
 }
