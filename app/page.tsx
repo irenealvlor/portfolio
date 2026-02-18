@@ -28,8 +28,8 @@ function PageShell({ children }: { children: ReactNode }) {
         className="
           w-full max-w-[1440px] mx-auto
           h-full flex flex-col justify-between
-          px-[var(--space-page-x)]
-          pt-[var(--space-page-y)] pb-[var(--space-page-y)]
+          px-5 sm:px-6 lg:px-[var(--space-page-x)]
+          pt-[var(--space-page-y)] pb-[var(--space-page-y)] md:pt-[calc(var(--space-page-y)+16px)] md:pb-[calc(var(--space-page-y)+16px)]
         "
       >
         {children}
@@ -43,8 +43,8 @@ function CardBase() {
     <article
       className="
         shrink-0
-        w-[clamp(300px,22vw,324px)]
-        aspect-[324/553]
+        w-full lg:w-[clamp(300px,26vw,360px)]
+        lg:aspect-[324/553]
         h-auto
         rounded-[var(--radius-xl)]
         relative overflow-hidden
@@ -78,8 +78,8 @@ function ProjectCard({
     <article
       className="
         shrink-0
-        w-[clamp(300px,22vw,324px)]
-        aspect-[324/553]
+        w-full lg:w-[clamp(300px,26vw,360px)]
+        lg:aspect-[324/553]
         h-auto
         rounded-[var(--radius-xl)]
         relative
@@ -96,7 +96,7 @@ function ProjectCard({
     >
       <div className="absolute inset-0 bg-[color:var(--color-bg-card)] opacity-[0.10] pointer-events-none" />
       {/* Inner padding = S (16px). */}
-      <div className="relative z-10 p-4 h-full flex flex-col items-start">
+      <div className="relative z-10 p-4 flex flex-col items-start">
         {/* Image (near-square) */}
         <div className="relative w-full aspect-[292/293] rounded-[var(--radius-m)] overflow-hidden">
           <img
@@ -250,11 +250,12 @@ function ArticlesCard() {
     <article
       className="
         shrink-0
-        w-[clamp(300px,22vw,324px)]
-        h-[553px]
+        w-full lg:w-[clamp(300px,26vw,360px)]
+        lg:aspect-[324/553]
+        h-auto
       "
     >
-      <div className="h-full w-full flex flex-col gap-4">
+      <div className="w-full flex flex-col gap-4">
         {/* 3 floating mini-cards (custom structure) */}
         <a
           href="https://medium.com/@irenealvlor/i-want-to-be-an-artist-79559c394c85"
@@ -390,7 +391,7 @@ function ProfileCard() {
     <article
       className="
         shrink-0
-        w-[clamp(300px,22vw,324px)]
+        w-full lg:w-[clamp(300px,26vw,360px)]
         aspect-[324/553]
         h-auto
         rounded-[var(--radius-xl)]
@@ -528,6 +529,16 @@ export default function Home() {
 
   const scrollerRef = useRef<HTMLDivElement | null>(null);
 
+  const mobileItems = useMemo<CarouselItem[]>(
+    () => {
+      const byId = new Map(baseItems.map((it) => [it.id, it] as const));
+      return ["me", "p3", "p2", "p1", "art"]
+        .map((id) => byId.get(id))
+        .filter(Boolean) as CarouselItem[];
+    },
+    [baseItems]
+  );
+
   // Initial “peek” so both edges feel cut.
   useEffect(() => {
     const el = scrollerRef.current;
@@ -538,60 +549,88 @@ export default function Home() {
   return (
     <main className="relative z-10 h-screen overflow-x-hidden overflow-y-visible">
       <PageShell>
-        <section className="grid grid-cols-12 gap-[var(--space-gutter)] items-start">
-          <div className="col-span-12 lg:col-span-9 flex flex-col gap-[var(--space-gutter)]">
-            <h1>
-              <span className="block">Design should be built</span>
-              <span className="block">for changing skies.</span>
-            </h1>
-          </div>
-
-          <div className="col-span-12 lg:col-span-3 lg:flex lg:justify-end">
-            <div className="mt-4 lg:mt-2 relative inline-flex items-center gap-2 rounded-full px-4 py-3 overflow-hidden bg-white/25 border border-white/40 backdrop-blur-lg shadow-[0_8px_24px_rgba(0,0,0,0.08)] ring-1 ring-white/20 before:content-[''] before:absolute before:inset-0 before:bg-[linear-gradient(135deg,rgba(255,255,255,0.55)_0%,rgba(255,255,255,0.15)_35%,rgba(255,255,255,0)_60%)] before:opacity-70 before:pointer-events-none before:z-0 after:content-[''] after:absolute after:inset-0 after:bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.6)_0%,rgba(255,255,255,0)_55%)] after:opacity-60 after:pointer-events-none after:z-0">
-              <span className="relative z-10 flex items-center gap-2 text-sm text-[color:var(--color-text-primary)]">
-                <SunIcon className="w-4 h-4" />
-                Vigo, Spain
-              </span>
+        <div className="h-full flex flex-col">
+          <section className="grid grid-cols-12 gap-[var(--space-gutter)] items-start">
+            <div className="col-span-12 lg:col-span-9 flex flex-col gap-[var(--space-gutter)]">
+              <h1 className="w-full max-w-none">
+                Design should be built{" "}
+                <br className="hidden sm:block" />{" "}
+                for changing skies.
+              </h1>
             </div>
-          </div>
-        </section>
 
-
-
-        <section>
-          <div
-            ref={scrollerRef}
-            className="
-              -mx-[var(--space-page-x)]
-              px-6
-              overflow-x-auto overflow-y-visible
-              pb-10 -mb-10
-              flex gap-[var(--space-gutter)]
-              snap-x snap-proximity scroll-pl-6 scroll-pr-6
-              [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden
-            "
-            aria-label="Projects carousel"
-          >
-            {baseItems.map((item) => (
-              <div key={item.id} className="shrink-0 snap-start">
-                {item.kind === "profile" ? (
-                  <ProfileCard />
-                ) : item.kind === "project" && item.imageSrc ? (
-                  <ProjectCard
-                    id={item.id}
-                    imageSrc={item.imageSrc}
-                    text={item.subtitle ?? ""}
-                    projectType={item.projectType}
-                  />
-                ) : item.kind === "articles" ? (
-                  <ArticlesCard />
-                ) : (
-                  <CardBase />
-                )}
+            <div className="col-span-12 lg:col-span-3 lg:flex lg:justify-end">
+              <div className="mt-2 lg:mt-2 relative inline-flex items-center gap-2 rounded-full px-4 py-3 overflow-hidden bg-white/25 border border-white/40 backdrop-blur-lg shadow-[0_8px_24px_rgba(0,0,0,0.08)] ring-1 ring-white/20 before:content-[''] before:absolute before:inset-0 before:bg-[linear-gradient(135deg,rgba(255,255,255,0.55)_0%,rgba(255,255,255,0.15)_35%,rgba(255,255,255,0)_60%)] before:opacity-70 before:pointer-events-none before:z-0 after:content-[''] after:absolute after:inset-0 after:bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.6)_0%,rgba(255,255,255,0)_55%)] after:opacity-60 after:pointer-events-none after:z-0">
+                <span className="relative z-10 flex items-center gap-2 text-sm text-[color:var(--color-text-primary)]">
+                  <SunIcon className="w-4 h-4" />
+                  Vigo, Spain
+                </span>
               </div>
-            ))}
-          </div>
-        </section>
+            </div>
+          </section>
+
+          {/* Large screens: flexible spacer so cards never stick to the title (min gap), and tall screens distribute extra height here */}
+          <div className="hidden lg:block flex-1 min-h-10" aria-hidden="true" />
+
+          <section className="mt-8 lg:mt-0">
+            {/* Mobile: normal vertical scroll (no carousel) */}
+            <div className="lg:hidden flex flex-col gap-[var(--space-gutter)] pb-20 sm:pb-24">
+              {mobileItems.map((item) => (
+                <div key={item.id} className="w-full flex justify-center">
+                  {item.kind === "profile" ? (
+                    <ProfileCard />
+                  ) : item.kind === "project" && item.imageSrc ? (
+                    <ProjectCard
+                      id={item.id}
+                      imageSrc={item.imageSrc}
+                      text={item.subtitle ?? ""}
+                      projectType={item.projectType}
+                    />
+                  ) : item.kind === "articles" ? (
+                    <ArticlesCard />
+                  ) : (
+                    <CardBase />
+                  )}
+                </div>
+              ))}
+            </div>
+
+            {/* Desktop: keep carousel */}
+            <div
+              ref={scrollerRef}
+              className="
+                hidden lg:flex
+                -mx-4 sm:-mx-6 lg:-mx-[var(--space-page-x)]
+                px-4 sm:px-6
+                overflow-x-auto overflow-y-visible
+                pb-10 -mb-10
+                gap-[var(--space-gutter)]
+                snap-x snap-proximity scroll-pl-4 scroll-pr-4 sm:scroll-pl-6 sm:scroll-pr-6
+                [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden
+              "
+              aria-label="Projects carousel"
+            >
+              {baseItems.map((item) => (
+                <div key={item.id} className="shrink-0 snap-start">
+                  {item.kind === "profile" ? (
+                    <ProfileCard />
+                  ) : item.kind === "project" && item.imageSrc ? (
+                    <ProjectCard
+                      id={item.id}
+                      imageSrc={item.imageSrc}
+                      text={item.subtitle ?? ""}
+                      projectType={item.projectType}
+                    />
+                  ) : item.kind === "articles" ? (
+                    <ArticlesCard />
+                  ) : (
+                    <CardBase />
+                  )}
+                </div>
+              ))}
+            </div>
+          </section>
+        </div>
       </PageShell>
     </main>
   );
