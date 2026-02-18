@@ -43,7 +43,7 @@ function CardBase() {
     <article
       className="
         shrink-0
-        w-full lg:w-[clamp(300px,26vw,360px)]
+        w-full lg:w-[clamp(300px,22vw,324px)] min-[1280px]:max-[1366px]:w-[clamp(320px,24vw,360px)]
         lg:aspect-[324/553]
         h-auto
         rounded-[var(--radius-xl)]
@@ -78,7 +78,7 @@ function ProjectCard({
     <article
       className="
         shrink-0
-        w-full lg:w-[clamp(300px,26vw,360px)]
+        w-full lg:w-[clamp(300px,22vw,324px)] min-[1280px]:max-[1366px]:w-[clamp(320px,24vw,360px)]
         lg:aspect-[324/553]
         h-auto
         rounded-[var(--radius-xl)]
@@ -250,7 +250,7 @@ function ArticlesCard() {
     <article
       className="
         shrink-0
-        w-full lg:w-[clamp(300px,26vw,360px)]
+        w-full lg:w-[clamp(300px,22vw,324px)] min-[1280px]:max-[1366px]:w-[clamp(320px,24vw,360px)]
         lg:aspect-[324/553]
         h-auto
       "
@@ -391,7 +391,7 @@ function ProfileCard() {
     <article
       className="
         shrink-0
-        w-full lg:w-[clamp(300px,26vw,360px)]
+        w-full lg:w-[clamp(300px,22vw,324px)] min-[1280px]:max-[1366px]:w-[clamp(320px,24vw,360px)]
         aspect-[324/553]
         h-auto
         rounded-[var(--radius-xl)]
@@ -570,9 +570,8 @@ export default function Home() {
           </section>
 
           {/* Large screens: flexible spacer so cards never stick to the title (min gap), and tall screens distribute extra height here */}
-          <div className="hidden lg:block flex-1 min-h-10" aria-hidden="true" />
 
-          <section className="mt-8 lg:mt-0">
+          <section className="mt-8 lg:mt-[min(var(--space-section-gap),48px)] lg:flex-1 lg:flex lg:flex-col">
             {/* Mobile: normal vertical scroll (no carousel) */}
             <div className="lg:hidden flex flex-col gap-[var(--space-gutter)] pb-20 sm:pb-24">
               {mobileItems.map((item) => (
@@ -599,7 +598,7 @@ export default function Home() {
             <div
               ref={scrollerRef}
               className="
-                hidden lg:flex
+                hidden lg:flex mt-auto
                 -mx-4 sm:-mx-6 lg:-mx-[var(--space-page-x)]
                 px-4 sm:px-6
                 overflow-x-auto overflow-y-visible
